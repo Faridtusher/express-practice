@@ -5,6 +5,7 @@ const hostname = '127.0.0.1'
 const adminRouter = require('./router/admin.route')
 const customerRoute = require('./router/customer.route')
 const jsonRoute = require('./router/json.route')
+const myApp = require('./request/request')
 
 
 
@@ -12,6 +13,7 @@ const jsonRoute = require('./router/json.route')
 app.use('/admin', adminRouter)
 app.use(customerRoute)
 app.use('/json', jsonRoute)
+app.use(myApp)
 
 // ******* Route of another pages **********
 
@@ -20,7 +22,7 @@ app.use('/json', jsonRoute)
 // ******* Route of home page and not found page **********
 app.get('/', (req, res) =>{
    res.statusCode = 200
-   res.sendFile(__dirname+"/views/index.html")
+   res.send('This is home page')
 })
 
 app.get('/special', (req, res) => {
@@ -30,6 +32,18 @@ app.get('/special', (req, res) => {
    res.header('Name', 'Dima')
    res.end()
 })
+
+app.get('/login', (req, res) =>{
+   res.sendFile(__dirname+'/views/index.html')
+})
+
+app.post('/login', (req, res)=>{
+   const name = req.body.name;
+   const age = req.body.age;
+   res.send(`My name is ${name} i am ${age} years old.`)
+})
+
+
 
 app.use((req, res) =>{
    res.send('404!!!Not found')
